@@ -8,7 +8,7 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 
-import Fachada.Fachada;
+import fachada.Fachada;
 
 import javax.swing.JButton;
 import java.awt.event.ActionListener;

@@ -7,6 +7,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
 
 import modelo.Atendimento;
 
@@ -15,38 +17,36 @@ public class Cliente {
 	
 	@Id		
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	private int id;
+	private Integer id;
+	
 	private String nome;
 	private String endereco;
 	private String telefone;
 	private String email;
 	
+	@OneToMany(mappedBy="cliente")
 	private List<Animal> animais = new ArrayList<>();
-	private List<Cliente> telefones = new ArrayList<>();
-	
+		
 
-	public Cliente(int id, String nome, String endereco, String telefone, String email) {
-		this.id = id;
+	public Cliente(String nome, String endereco, String telefone, String email) {
 		this.nome = nome;
 		this.endereco = endereco;
 		this.telefone = telefone;
 		this.email = email;
 	}
 	
-	public Cliente(int id, String nome, String telefone) {
-		this.id = id;
+	public Cliente(String nome, String telefone) {
 		this.nome = nome;
 		this.telefone = telefone;
 	}
 	
 	public Cliente() {}
-	
 
-	public int getId() {
+	public Integer getId() {
 		return id;
 	}
 
-	public void setId(int id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
 
@@ -90,14 +90,7 @@ public class Cliente {
 		this.animais.add(animal);
 	}
 	
-	public List<Cliente> getTelefones() {
-		return this.telefones;
-	}
 
-	public void setTelefone(Cliente telefone) {
-		this.telefones.add(telefone);
-	}
-	
 	public Cliente Filtro() {
 		return null;
 	}

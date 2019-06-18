@@ -1,6 +1,6 @@
 package aplicacao;
 
-import Fachada.Fachada;
+import fachada.Fachada;
 
 public class Atualizar {
 	

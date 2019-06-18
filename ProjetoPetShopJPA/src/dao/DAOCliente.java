@@ -6,7 +6,7 @@ import java.util.List;
 import javax.persistence.NoResultException;
 import javax.persistence.Query;
 
-import Fachada.Fachada;
+import fachada.Fachada;
 import modelo.Animal;
 import modelo.Atendimento;
 import modelo.Cliente;

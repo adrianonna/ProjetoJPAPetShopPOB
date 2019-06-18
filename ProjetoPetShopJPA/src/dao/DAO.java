@@ -37,8 +37,8 @@ public abstract class DAO<T> implements DAOInterface<T> {
 			//			properties.put(PersistenceUnitProperties.SCHEMA_GENERATION_DATABASE_ACTION, "create");
 			//			properties.put(PersistenceUnitProperties.SCHEMA_GENERATION_SCRIPTS_ACTION, "create");						
 			//			properties.put(PersistenceUnitProperties.SCHEMA_GENERATION_SCRIPTS_ACTION, "create");
-			factory = Persistence.createEntityManagerFactory("agenda-eclipselink", properties);
-			//----factory = Persistence.createEntityManagerFactory("agenda-hibernate", properties);
+			//factory = Persistence.createEntityManagerFactory("petshop-eclipselink", properties);
+			factory = Persistence.createEntityManagerFactory("petshop-hibernate");
 			manager = factory.createEntityManager();
 		}
 	}
@@ -80,7 +80,7 @@ public abstract class DAO<T> implements DAOInterface<T> {
 		return (List<T>) query.getResultList();
 	}
 
-	//----------------------- TRANSAÇÃO   ----------------------
+	//----------------------- TRANSAï¿½ï¿½O   ----------------------
 	public static void begin(){
 		if(!manager.getTransaction().isActive())
 			manager.getTransaction().begin();

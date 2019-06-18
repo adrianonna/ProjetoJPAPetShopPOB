@@ -16,7 +16,7 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.ScrollPaneConstants;
 
-import Fachada.Fachada;
+import fachada.Fachada;
 import modelo.Atendimento;
 import modelo.Produto;
 import modelo.Servico;
@@ -99,7 +99,7 @@ public class TelaCadastroAtendimento {
 		btnAddProd.setFont(new Font("Tahoma", Font.PLAIN, 10));
 		btnAddProd.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				int id = atendimento.getCod();
+				int id = atendimento.getId();
 				try {
 					Fachada.adicionarProdutoAtendimento(id, comboBoxProd.getSelectedItem().toString());
 					List<Produto> prods = atendimento.getProdutos();
@@ -118,7 +118,7 @@ public class TelaCadastroAtendimento {
 		JButton btnAddServ = new JButton("Add");
 		btnAddServ.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				int id = atendimento.getCod();
+				int id = atendimento.getId();
 				try {
 					Fachada.adicionarServicoAtendimento(id, comboBoxServ.getSelectedItem().toString());;
 					List<Servico> servs = atendimento.getServicos();

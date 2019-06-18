@@ -10,7 +10,7 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 
-import Fachada.Fachada;
+import fachada.Fachada;
 import modelo.Cliente;
 import modelo.Produto;
 

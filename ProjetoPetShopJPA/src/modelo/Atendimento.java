@@ -4,35 +4,42 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 
 @Entity 
 public class Atendimento {
 	
 	@Id		
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	private int cod;
+	private Integer id;
+	
 	private double precoTotal;
 	private LocalDate data;
 	private String funcionario;
+	
+	@ManyToOne
 	private Animal animal;
 	
+	@ManyToMany(mappedBy="atendimentos", fetch=FetchType.LAZY)
 	private List<Produto> produtos = new ArrayList<Produto>();
+	
+	@ManyToMany(mappedBy="atendimentos", fetch=FetchType.LAZY)
 	private List<Servico> servicos = new ArrayList<Servico>();
 	
-	public Atendimento(int cod, LocalDate data, String funcionario) {
-		super();
-		this.cod = cod;
+	public Atendimento(LocalDate data, String funcionario) {
 		this.data = data;
 		this.funcionario = funcionario;
 	}
 	
-	public Atendimento(int cod, LocalDate data, String funcionario, Animal animal) {
-		super();
-		this.cod = cod;
+	public Atendimento(LocalDate data, String funcionario, Animal animal) {
 		this.data = data;
 		this.funcionario = funcionario;
 		this.animal = animal;
@@ -40,12 +47,13 @@ public class Atendimento {
 
 	public Atendimento() {}
 
-	public int getCod() {
-		return cod;
+
+	public Integer getId() {
+		return id;
 	}
 
-	public void setCod(int cod) {
-		this.cod = cod;
+	public void setId(Integer id) {
+		this.id = id;
 	}
 
 	public double getPrecoTotal() {
@@ -99,7 +107,7 @@ public class Atendimento {
 
 	@Override
 	public String toString() {
-		return "Atendimento [cod=" + cod + ", PreçoTotal: "+ precoTotal +", data=" + data + ", funcionario="
+		return "Atendimento [id=" + id + ", Preï¿½oTotal: "+ precoTotal +", data=" + data + ", funcionario="
 				+ funcionario + ", animal=" + this.getAnimal() + ", produtos=" + this.getProdutos() +
 				", servicos=" + this.getServicos() + "]";
 	}

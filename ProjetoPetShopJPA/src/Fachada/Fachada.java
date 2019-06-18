@@ -1,4 +1,4 @@
-package Fachada;
+package fachada;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
@@ -43,8 +43,7 @@ public class Fachada {
 		if(c != null)
 			throw new Exception("cadastrar pessoa - pessoa ja cadastrado:" + nome);
 
-		int idcliente = daocliente.consultarUltimoIdCliente();
-		c = new Cliente(idcliente+1, nome.toLowerCase(), telefone);
+		c = new Cliente(nome.toLowerCase(), telefone);
 		daocliente.create(c);	
 		DAO.commit();
 		System.out.println("Cliente cadastrado!");
@@ -57,8 +56,7 @@ public class Fachada {
 		if(c != null)
 			throw new Exception("cadastrar pessoa - pessoa ja cadastrado:" + nome);
 
-		int idcliente = daocliente.consultarUltimoIdCliente();
-		c = new Cliente(idcliente+1, nome.toLowerCase(), endereco.toLowerCase(), telefone, email.toLowerCase());
+		c = new Cliente(nome.toLowerCase(), endereco.toLowerCase(), telefone, email.toLowerCase());
 		daocliente.create(c);	
 		DAO.commit();
 		System.out.println("Cliente cadastrado!");
@@ -70,10 +68,8 @@ public class Fachada {
 		Produto p = daoproduto.read(nome.toLowerCase());
 		if(p != null)
 			throw new Exception("cadastrar produto - produto ja cadastrado:" + nome);
-
 		
-		int idproduto = daoproduto.consultarUltimoIdProduto();
-		p = new Produto(idproduto+1, nome.toLowerCase(), preco);
+		p = new Produto(nome.toLowerCase(), preco);
 		daoproduto.create(p);	
 		DAO.commit();
 		System.out.println("Produto Cadastrado!");
@@ -86,8 +82,7 @@ public class Fachada {
 		if(a == null)
 			throw new Exception("Animal nÃ£o cadastrado, cadastrar antes!");
 
-		int ultimoAtend = daoatendimento.consultarUltimoAtendimento();
-		Atendimento aten = new Atendimento(ultimoAtend+1, data, funcionario, a);		
+		Atendimento aten = new Atendimento(data, funcionario, a);		
 		daoatendimento.create(aten);
 		daoatendimento.update(aten);
 		a.setAtendimentos(aten);
@@ -107,8 +102,7 @@ public class Fachada {
 		if(r == null)
 			throw new Exception("Raca nao cadastrada: " + raca);
 		
-		int idAnimal = daoanimal.consultarUltimoIdAnimal();
-		a = new Animal(idAnimal+1, nome.toLowerCase(), data_nasc, sexo, peso, comprimento, r);
+		a = new Animal(nome.toLowerCase(), data_nasc, sexo, peso, comprimento, r);
 		daoanimal.create(a);	
 		DAO.commit();
 		System.out.println("Animal Cadastrado!");
@@ -124,8 +118,7 @@ public class Fachada {
 		if(r == null)
 			throw new Exception("Raca nao cadastrada: " + raca);
 		
-		int idAnimal = daoanimal.consultarUltimoIdAnimal();
-		a = new Animal(idAnimal+1, nome.toLowerCase(), r);
+		a = new Animal(nome.toLowerCase(), r);
 		daoanimal.create(a);	
 		DAO.commit();
 		System.out.println("Animal Cadastrado!");
@@ -200,7 +193,9 @@ public class Fachada {
 		}else {
 			aten.setPrecoTotal(serv.getPreco());
 		}
+		 serv.setAtendimentos(aten);
 		daoatendimento.update(aten);
+		daoservico.update(serv);
 		DAO.commit();
 		System.out.println("Servico adicionado ao Atendimento!");
 	}
@@ -222,7 +217,9 @@ public class Fachada {
 		}else {
 			aten.setPrecoTotal(prod.getPreco());
 		}
+		prod.setAtendimentos(aten);
 		daoatendimento.update(aten);
+		daoproduto.update(prod);
 		//daoproduto.update(prod); precisa disso?
 		DAO.commit();
 		System.out.println("Produto adicionado ao Atendimento!");
@@ -302,197 +299,197 @@ public class Fachada {
 	
 	
 //	BUSCA
-	
-	// buscas com 3 classes 
-	public static String consultarClientesQueTenhamCompradoProdutoEServico(String nomeProduto, String nomeServico) throws  Exception {
-		Servico serv = daoservico.read(nomeServico.toLowerCase());
-		Produto prod = daoproduto.read(nomeProduto.toLowerCase());
-		if (serv == null && prod == null) {
-			throw new Exception("Servico ou produto nao cadastrado!");
-		}
-		String texto = daoatendimento.consultarClientesQueTenhamCompradoProdutoEServico(nomeProduto.toLowerCase(), nomeServico.toLowerCase());
-		if(texto.isEmpty()) {
-			throw new Exception("Não existe cliente que consumiu o servico e produto em conjunto!");
-		}
-		return "Clientes que compraram "+ nomeProduto + " e " + nomeServico + " => "+texto;
-	}
-	
-	public static String consultarClientesPorServicoOuProduto(String nome) throws  Exception {
-		Servico serv = daoservico.read(nome.toLowerCase());
-		Produto prod = daoproduto.read(nome.toLowerCase());
-		if (serv == null && prod == null) {
-			throw new Exception("Servico ou produto nao cadastrado!");
-		}
-		ArrayList<Cliente> clientes = daoatendimento.consultarClientesPorServicoOuProduto(nome);
-		String nomeClientes = "";
-		for (Cliente cliente : clientes) {
-			nomeClientes += cliente.getNome()+", ";
-		}
-		if (prod != null)
-			return "\nOs clientes que compraram o produto "+prod.getNome()+" sao: "+nomeClientes;
-		else if (serv != null)
-			return "\nOs clientes que compraram o servico "+serv.getNome()+" sao: "+nomeClientes;
-		return null;
-	}
-	
-	public static String consultarRacaConsumiuProduto(String nomeProduto, String nomeServico) throws Exception {
-		Servico serv = daoservico.read(nomeServico.toLowerCase());
-		Produto prod = daoproduto.read(nomeProduto.toLowerCase());
-		if (serv == null && prod == null) {
-			throw new Exception("Servico ou produto nao cadastrado!");
-		}
-		String result = daoatendimento.consultarRacaConsumiuProduto(nomeProduto, nomeServico);
-		return "As racas que consumiram " + nomeProduto + " e " + nomeServico + " sao " + result;
-	}
-	
-	// outras buscas
-	
-	public static String consultarDonoERacaAnimal(String nomeAnimal) {
-		String resultado  = daoanimal.consultarDonoERacaAnimal(nomeAnimal);
-		
-		return resultado;
-	}
-	public static String consultarClientePorParteNome(String caracteres) {
-		String result = daocliente.consultarClientePorParteNome(caracteres.toLowerCase());
-		return result;
-	}
-	
-//	public static String consultarClientePorNome(String caracteres)  throws  Exception {
-//		String result = daocliente.consultarClientePorNome(caracteres.toLowerCase());
-//		return "O cliente do nome "+caracteres+" ï¿½ "+result;
+//	
+//	// buscas com 3 classes 
+//	public static String consultarClientesQueTenhamCompradoProdutoEServico(String nomeProduto, String nomeServico) throws  Exception {
+//		Servico serv = daoservico.read(nomeServico.toLowerCase());
+//		Produto prod = daoproduto.read(nomeProduto.toLowerCase());
+//		if (serv == null && prod == null) {
+//			throw new Exception("Servico ou produto nao cadastrado!");
+//		}
+//		String texto = daoatendimento.consultarClientesQueTenhamCompradoProdutoEServico(nomeProduto.toLowerCase(), nomeServico.toLowerCase());
+//		if(texto.isEmpty()) {
+//			throw new Exception("Nï¿½o existe cliente que consumiu o servico e produto em conjunto!");
+//		}
+//		return "Clientes que compraram "+ nomeProduto + " e " + nomeServico + " => "+texto;
 //	}
-	
-	public static Cliente consultarClientePorNomeObj(String caracteres)  throws  Exception {
-		Cliente result = daocliente.consultarClientePorNomeObj(caracteres.toLowerCase());
-		return result;
-	}
-	
-	
-	public static String consultarClientePorTelefone(String tel) throws  Exception {
-		Cliente result = daocliente.consultarClientePorTelefone(tel);
-		return "O cliente do telefone "+tel+ " ï¿½ " +result.getNome();
-	}
-	
-	public static String consultarAnimaisDoCliente(String cli) throws  Exception {
-		ArrayList<Animal> animais = daocliente.consultarAnimaisDoCliente(cli.toLowerCase());
-		String texto = "";
-		for(Animal ani : animais) {
-			texto += ani.getNome()+", ";
-		}		
-		return "Os animais do cliente "+cli+" sao: "+texto;
-	}
-	
-	public static String consultarClienteDoAnimal(String ani) throws  Exception {
-		Animal a = daoanimal.read(ani.toLowerCase());
-		if(a == null) 
-			throw new Exception("\nAnimal "+ani+" nao encontrado");
-		else
-			return "Cliente dono de " + ani + " -> " + a.getCliente().getNome();
-	}
-	
-	public static String consultarValorAtendimento(int id) throws  Exception {
-		DAO.begin();
-		Atendimento aten = daoatendimento.read(id);
-		if(aten == null) {
-			throw new Exception("\nAtendimento nao encontrado!");
-		}
-		double atendimento = daoatendimento.consultarValorAtendimento(id);
-		return "O valor do atendimento "+id+" Ã© "+atendimento;
-	}
-	
-	public static String consultarClienteMaisConsumiu() {
-		Atendimento atendimento = daoatendimento.consultarClienteMaisConsumiu();
-		return "O cliente "+atendimento.getAnimal().getCliente().getNome()+" consumiu "+atendimento.getPrecoTotal();	
-	}
-	
+//	
+//	public static String consultarClientesPorServicoOuProduto(String nome) throws  Exception {
+//		Servico serv = daoservico.read(nome.toLowerCase());
+//		Produto prod = daoproduto.read(nome.toLowerCase());
+//		if (serv == null && prod == null) {
+//			throw new Exception("Servico ou produto nao cadastrado!");
+//		}
+//		ArrayList<Cliente> clientes = daoatendimento.consultarClientesPorServicoOuProduto(nome);
+//		String nomeClientes = "";
+//		for (Cliente cliente : clientes) {
+//			nomeClientes += cliente.getNome()+", ";
+//		}
+//		if (prod != null)
+//			return "\nOs clientes que compraram o produto "+prod.getNome()+" sao: "+nomeClientes;
+//		else if (serv != null)
+//			return "\nOs clientes que compraram o servico "+serv.getNome()+" sao: "+nomeClientes;
+//		return null;
+//	}
+//	
+//	public static String consultarRacaConsumiuProduto(String nomeProduto, String nomeServico) throws Exception {
+//		Servico serv = daoservico.read(nomeServico.toLowerCase());
+//		Produto prod = daoproduto.read(nomeProduto.toLowerCase());
+//		if (serv == null && prod == null) {
+//			throw new Exception("Servico ou produto nao cadastrado!");
+//		}
+//		String result = daoatendimento.consultarRacaConsumiuProduto(nomeProduto, nomeServico);
+//		return "As racas que consumiram " + nomeProduto + " e " + nomeServico + " sao " + result;
+//	}
+//	
+//	// outras buscas
+//	
+//	public static String consultarDonoERacaAnimal(String nomeAnimal) {
+//		String resultado  = daoanimal.consultarDonoERacaAnimal(nomeAnimal);
+//		
+//		return resultado;
+//	}
+//	public static String consultarClientePorParteNome(String caracteres) {
+//		String result = daocliente.consultarClientePorParteNome(caracteres.toLowerCase());
+//		return result;
+//	}
+//	
+////	public static String consultarClientePorNome(String caracteres)  throws  Exception {
+////		String result = daocliente.consultarClientePorNome(caracteres.toLowerCase());
+////		return "O cliente do nome "+caracteres+" ï¿½ "+result;
+////	}
+//	
+//	public static Cliente consultarClientePorNomeObj(String caracteres)  throws  Exception {
+//		Cliente result = daocliente.consultarClientePorNomeObj(caracteres.toLowerCase());
+//		return result;
+//	}
+//	
+//	
+//	public static String consultarClientePorTelefone(String tel) throws  Exception {
+//		Cliente result = daocliente.consultarClientePorTelefone(tel);
+//		return "O cliente do telefone "+tel+ " ï¿½ " +result.getNome();
+//	}
+//	
+//	public static String consultarAnimaisDoCliente(String cli) throws  Exception {
+//		ArrayList<Animal> animais = daocliente.consultarAnimaisDoCliente(cli.toLowerCase());
+//		String texto = "";
+//		for(Animal ani : animais) {
+//			texto += ani.getNome()+", ";
+//		}		
+//		return "Os animais do cliente "+cli+" sao: "+texto;
+//	}
+//	
+//	public static String consultarClienteDoAnimal(String ani) throws  Exception {
+//		Animal a = daoanimal.read(ani.toLowerCase());
+//		if(a == null) 
+//			throw new Exception("\nAnimal "+ani+" nao encontrado");
+//		else
+//			return "Cliente dono de " + ani + " -> " + a.getCliente().getNome();
+//	}
+//	
+//	public static String consultarValorAtendimento(int id) throws  Exception {
+//		DAO.begin();
+//		Atendimento aten = daoatendimento.read(id);
+//		if(aten == null) {
+//			throw new Exception("\nAtendimento nao encontrado!");
+//		}
+//		double atendimento = daoatendimento.consultarValorAtendimento(id);
+//		return "O valor do atendimento "+id+" Ã© "+atendimento;
+//	}
+//	
+//	public static String consultarClienteMaisConsumiu() {
+//		Atendimento atendimento = daoatendimento.consultarClienteMaisConsumiu();
+//		return "O cliente "+atendimento.getAnimal().getCliente().getNome()+" consumiu "+atendimento.getPrecoTotal();	
+//	}
+//	
+////	public static String consultarClientesPorProduto(String nome) throws  Exception {
+////		Produto prod = daoproduto.read(nome);
+////		if (prod == null) {
+////			throw new Exception("\nProduto nao cadastrado!");
+////		}
+////		ArrayList<Cliente> clientes = daoatendimento.consultarClientesPorProduto(nome);
+////		
+////		return "\nO clientes que compraram o produto \""+nome+"\" sao: "+clientes;
+////	}
+//	
 //	public static String consultarClientesPorProduto(String nome) throws  Exception {
 //		Produto prod = daoproduto.read(nome);
 //		if (prod == null) {
-//			throw new Exception("\nProduto nao cadastrado!");
+//			throw new Exception("\nProduto nï¿½o cadastrado!");
 //		}
 //		ArrayList<Cliente> clientes = daoatendimento.consultarClientesPorProduto(nome);
-//		
-//		return "\nO clientes que compraram o produto \""+nome+"\" sao: "+clientes;
+//		if (clientes.isEmpty()) {
+//			throw new Exception("\nNenhum cliente comprou esse produto!");
+//		}
+//		String nomeClientes = "";
+//		for(Cliente cli : clientes) {
+//			nomeClientes += cli.getNome()+", ";
+//		}
+//		return "\nO clientes que compraram o produto \""+nome+"\" sï¿½o: "+nomeClientes;
 //	}
-	
-	public static String consultarClientesPorProduto(String nome) throws  Exception {
-		Produto prod = daoproduto.read(nome);
-		if (prod == null) {
-			throw new Exception("\nProduto nï¿½o cadastrado!");
-		}
-		ArrayList<Cliente> clientes = daoatendimento.consultarClientesPorProduto(nome);
-		if (clientes.isEmpty()) {
-			throw new Exception("\nNenhum cliente comprou esse produto!");
-		}
-		String nomeClientes = "";
-		for(Cliente cli : clientes) {
-			nomeClientes += cli.getNome()+", ";
-		}
-		return "\nO clientes que compraram o produto \""+nome+"\" sï¿½o: "+nomeClientes;
-	}
-	
-	public static String consultarClientesPorServico(String nome) throws  Exception {
-		Servico serv = daoservico.read(nome);
-		if (serv == null) {
-			throw new Exception("\nServiï¿½o nï¿½o cadastrado!");
-		}
-		ArrayList<Cliente> clientes = daoatendimento.consultarClientesPorServico(nome);
-		if (clientes.isEmpty()) {
-			throw new Exception("\nNenhum cliente comprou esse serviï¿½o!");
-		}
-		String nomeClientes = "";
-		for(Cliente cli : clientes) {
-			nomeClientes += cli.getNome()+", ";
-		}
-		return "\nO clientes que compraram o serviï¿½o \""+nome+"\" sï¿½o: "+nomeClientes;
-	}
-		
-	
-	public static String consultarClientesPorServicoEProduto(String nomeServ, String nomeProd) throws  Exception {
-		Servico serv = daoservico.read(nomeServ.toLowerCase());
-		Produto prod = daoproduto.read(nomeProd.toLowerCase());
-		if (serv == null && prod == null) {
-			throw new Exception("Servico ou produto nao cadastrado!");
-		}
-		List<Atendimento> atendimentos = daoatendimento.consultarClientesPorServicoEProduto(serv.getNome(), prod.getNome());
-		if (atendimentos.isEmpty()) {
-			throw new Exception("Nï¿½o existe atendimento com com esse produto e serviï¿½o!");
-		}
-		String texto = "\nClientes que compraram o produto \""+nomeProd+"\" e serviï¿½o \""+nomeServ+"\" sï¿½o: ";
-		for (Atendimento aten : atendimentos) {
-			texto += aten.getAnimal().getCliente().getNome()+", animal: "+aten.getAnimal().getNome()+" | ";
-		}
-		return texto;
-	}
-	
-	public static String consultarServicoAnimal(String nomeAnimal) throws Exception {
-		Animal ani = daoanimal.read(nomeAnimal.toLowerCase());
-		if (ani == null) {
-			throw new Exception("Animal nao cadastrado!");
-		}
-		Animal a = daoanimal.consultarServicoAnimal(nomeAnimal.toLowerCase());
-		String nomeServicos="";
-		for (Atendimento aten : a.getAtendimentos()) {
-			nomeServicos += aten.getServicos()+", ";
-		}
-		
-		return "Os serviços do animal: "+nomeAnimal+" são: "+nomeServicos;
-	}
-	
-	public static String consultarAtendimentoQuantidadeProdutos(int qtd) throws  Exception {
-		DAO.begin();
-		List<Atendimento> atendimentos = daoatendimento.consultarAtendimentoQuantidadeProdutos(qtd);
-		if (atendimentos == null)
-			throw new Exception("\n Consultar quantidade de atendimentos - nao encontrado!");
-		String result = "Cliente com atendimento com mais de " + qtd + " produtos: \n";
-		for (Atendimento atende : atendimentos) {
-			result += atende.getAnimal().getCliente().getNome() + " - produtos: " + atende.getProdutos() + "\n";
-		}
-		DAO.commit();
-		return result;
-	}
-	
-	
+//	
+//	public static String consultarClientesPorServico(String nome) throws  Exception {
+//		Servico serv = daoservico.read(nome);
+//		if (serv == null) {
+//			throw new Exception("\nServiï¿½o nï¿½o cadastrado!");
+//		}
+//		ArrayList<Cliente> clientes = daoatendimento.consultarClientesPorServico(nome);
+//		if (clientes.isEmpty()) {
+//			throw new Exception("\nNenhum cliente comprou esse serviï¿½o!");
+//		}
+//		String nomeClientes = "";
+//		for(Cliente cli : clientes) {
+//			nomeClientes += cli.getNome()+", ";
+//		}
+//		return "\nO clientes que compraram o serviï¿½o \""+nome+"\" sï¿½o: "+nomeClientes;
+//	}
+//		
+//	
+//	public static String consultarClientesPorServicoEProduto(String nomeServ, String nomeProd) throws  Exception {
+//		Servico serv = daoservico.read(nomeServ.toLowerCase());
+//		Produto prod = daoproduto.read(nomeProd.toLowerCase());
+//		if (serv == null && prod == null) {
+//			throw new Exception("Servico ou produto nao cadastrado!");
+//		}
+//		List<Atendimento> atendimentos = daoatendimento.consultarClientesPorServicoEProduto(serv.getNome(), prod.getNome());
+//		if (atendimentos.isEmpty()) {
+//			throw new Exception("Nï¿½o existe atendimento com com esse produto e serviï¿½o!");
+//		}
+//		String texto = "\nClientes que compraram o produto \""+nomeProd+"\" e serviï¿½o \""+nomeServ+"\" sï¿½o: ";
+//		for (Atendimento aten : atendimentos) {
+//			texto += aten.getAnimal().getCliente().getNome()+", animal: "+aten.getAnimal().getNome()+" | ";
+//		}
+//		return texto;
+//	}
+//	
+//	public static String consultarServicoAnimal(String nomeAnimal) throws Exception {
+//		Animal ani = daoanimal.read(nomeAnimal.toLowerCase());
+//		if (ani == null) {
+//			throw new Exception("Animal nao cadastrado!");
+//		}
+//		Animal a = daoanimal.consultarServicoAnimal(nomeAnimal.toLowerCase());
+//		String nomeServicos="";
+//		for (Atendimento aten : a.getAtendimentos()) {
+//			nomeServicos += aten.getServicos()+", ";
+//		}
+//		
+//		return "Os serviï¿½os do animal: "+nomeAnimal+" sï¿½o: "+nomeServicos;
+//	}
+//	
+//	public static String consultarAtendimentoQuantidadeProdutos(int qtd) throws  Exception {
+//		DAO.begin();
+//		List<Atendimento> atendimentos = daoatendimento.consultarAtendimentoQuantidadeProdutos(qtd);
+//		if (atendimentos == null)
+//			throw new Exception("\n Consultar quantidade de atendimentos - nao encontrado!");
+//		String result = "Cliente com atendimento com mais de " + qtd + " produtos: \n";
+//		for (Atendimento atende : atendimentos) {
+//			result += atende.getAnimal().getCliente().getNome() + " - produtos: " + atende.getProdutos() + "\n";
+//		}
+//		DAO.commit();
+//		return result;
+//	}
+//	
+//	
 	
 	// DELETAR
 	

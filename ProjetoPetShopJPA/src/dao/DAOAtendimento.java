@@ -18,8 +18,8 @@ public class DAOAtendimento extends DAO<Atendimento>{
 	//Leitura POR id 
 	public Atendimento read (Object chave) {
 		try {
-			String nome = (String) chave;
-			Query q = manager.createQuery("select c from Atendimento c where c.nome= '"+ nome + "'");
+			Integer nome = (Integer) chave;
+			Query q = manager.createQuery("select c from Atendimento c where c.id= "+ nome + "");
 			return (Atendimento) q.getSingleResult();
 		} catch (NoResultException e) {
 			return null;

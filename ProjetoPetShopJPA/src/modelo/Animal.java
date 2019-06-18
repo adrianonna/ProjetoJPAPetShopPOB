@@ -4,10 +4,17 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import javax.persistence.CascadeType;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
 
 import modelo.Raca;
 
@@ -16,20 +23,25 @@ import modelo.Raca;
 public class Animal {
 	@Id		
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	private int cod;
+	private Integer id;
+	
 	private String nome;
 	private Date data_nasc;
 	private String sexo;
 	private Double peso;
 	private Double comprimento;
+
+	@ManyToOne
 	private Raca raca;
-	private Cliente c;
 	
+	@ManyToOne
+	private Cliente cliente;
+	
+	@OneToMany(mappedBy="animal", cascade=CascadeType.ALL, fetch = FetchType.EAGER)
 	private List<Atendimento> atendimentos = new ArrayList<>();
 	
 	
-	public Animal(int cod, String nome, Date data_nasc, String sexo, Double peso, Double comprimento, Raca raca) {
-		this.cod = cod;
+	public Animal(String nome, Date data_nasc, String sexo, Double peso, Double comprimento, Raca raca) {
 		this.nome = nome;
 		this.data_nasc = data_nasc;
 		this.sexo = sexo;
@@ -38,20 +50,20 @@ public class Animal {
 		this.raca = raca;
 	}
 	
-	public Animal(int cod, String nome, Raca raca) {
-		this.cod = cod;
+	public Animal(String nome, Raca raca) {
 		this.nome = nome;
 		this.raca = raca;
 	}
 	
 	public Animal() {}
 
-	public int getCod() {
-		return cod;
+
+	public Integer getId() {
+		return id;
 	}
 
-	public void setCod(int cod) {
-		this.cod = cod;
+	public void setId(Integer id) {
+		this.id = id;
 	}
 
 	public String getNome() {
@@ -111,17 +123,17 @@ public class Animal {
 	}
 
 	public Cliente getCliente() {
-		return c;
+		return cliente;
 	}
 
 	public void setCliente(Cliente c) {
-		this.c = c;
+		this.cliente = c;
 	}
 
 
 	@Override
 	public String toString() {
-		return "Animal [cod=" + cod + ", nome=" + nome + ", data_nasc=" + data_nasc + ", sexo=" + sexo + 
+		return "Animal [id=" + id + ", nome=" + nome + ", data_nasc=" + data_nasc + ", sexo=" + sexo + 
 				", peso="+ peso + ", comprimento=" + comprimento + ", raca=" + raca.getDescricao() +
 				"]";
 	}
