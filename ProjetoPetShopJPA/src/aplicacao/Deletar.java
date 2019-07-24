@@ -1,6 +1,6 @@
 package aplicacao;
 
-import fachada.Fachada;
+import Fachada.Fachada;
 
 public class Deletar {
 	

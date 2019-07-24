@@ -1,4 +1,4 @@
-package fachada;
+package Fachada;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
@@ -298,8 +298,24 @@ public class Fachada {
 	
 	
 	
-//	BUSCA
-//	
+//	CONSULTAR
+
+	public static String consultarAtendimentosAnimal(String nomeAnimal) throws Exception {
+		Animal animal = daoanimal.buscarAnimal(nomeAnimal);
+		if (animal == null) {
+			throw new Exception("Animal não encontrado!");
+		}
+		List<Atendimento> atendimentos = daoatendimento.consultarAtendimentosAnimal(animal.getId());
+		if (atendimentos.isEmpty()) {
+			throw new Exception("Animal não possui atendimentos!");
+		}
+		String result = "Atendimento do animal: " + animal.getNome() + "\n";
+		for (Atendimento atendimento : atendimentos) {
+			result += "data: " + atendimento.getData() + " atendente: " + atendimento.getFuncionario() + "\nServicos:  " + atendimento.getServicos() + "\nProdutos: "+atendimento.getProdutos() +"\nTotal: "+ atendimento.getPrecoTotal();
+		}
+		return result;
+	}
+	
 //	// buscas com 3 classes 
 //	public static String consultarClientesQueTenhamCompradoProdutoEServico(String nomeProduto, String nomeServico) throws  Exception {
 //		Servico serv = daoservico.read(nomeServico.toLowerCase());

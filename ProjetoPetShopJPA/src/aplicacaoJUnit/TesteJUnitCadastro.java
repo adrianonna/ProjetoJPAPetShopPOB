@@ -19,7 +19,7 @@ import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import fachada.Fachada;
+import Fachada.Fachada;
 import modelo.Pessoa;
 import modelo.Sexo;
 import modelo.Telefone;

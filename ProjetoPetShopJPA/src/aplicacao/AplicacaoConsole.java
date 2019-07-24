@@ -1,18 +1,18 @@
 package aplicacao;
 import java.time.LocalDate;
 
-import fachada.Fachada;
+import Fachada.Fachada;
 
 
 public class AplicacaoConsole {
 
 	public AplicacaoConsole(){	
 		Fachada.inicializar();
-		cadastrar(); 			
+		//cadastrar(); 			
 		//atualizar();		
 		//apagar();			
 		//listar();			
-		//consultar();
+		consultar();
 		Fachada.finalizar();
 	}
 
@@ -137,7 +137,7 @@ public class AplicacaoConsole {
 	/************************/
 	public void consultar(){
 		try {
-			//System.out.println(Fachada.consultarSexo(Sexo.MASCULINO));
+			System.out.println(Fachada.consultarAtendimentosAnimal("zoe"));
 		} catch (Exception e) {
 			System.out.println(e);
 		}

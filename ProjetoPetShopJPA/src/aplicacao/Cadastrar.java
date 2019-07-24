@@ -4,7 +4,7 @@ import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.Date;
 
-import fachada.Fachada;
+import Fachada.Fachada;
 import modelo.Animal;
 import modelo.Atendimento;
 import modelo.Cliente;

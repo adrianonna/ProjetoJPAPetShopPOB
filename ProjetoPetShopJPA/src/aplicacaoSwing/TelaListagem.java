@@ -11,7 +11,7 @@ import javax.swing.JTextArea;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.border.EmptyBorder;
 
-import fachada.Fachada;
+import Fachada.Fachada;
 
 public class TelaListagem extends JFrame {
 	private JPanel contentPane;

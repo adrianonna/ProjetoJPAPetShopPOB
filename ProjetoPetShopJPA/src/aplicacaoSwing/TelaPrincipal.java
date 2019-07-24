@@ -11,7 +11,7 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 
-import fachada.Fachada;
+import Fachada.Fachada;
 import modelo.Raca;
 
 import javax.swing.JButton;

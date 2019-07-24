@@ -18,8 +18,8 @@ public class DAOAtendimento extends DAO<Atendimento>{
 	//Leitura POR id 
 	public Atendimento read (Object chave) {
 		try {
-			Integer nome = (Integer) chave;
-			Query q = manager.createQuery("select c from Atendimento c where c.id= "+ nome + "");
+			Integer id = (Integer) chave;
+			Query q = manager.createQuery("select a from Atendimento a where a.id= "+ id + "");
 			return (Atendimento) q.getSingleResult();
 		} catch (NoResultException e) {
 			return null;
@@ -27,6 +27,13 @@ public class DAOAtendimento extends DAO<Atendimento>{
 	}
 	
 	// CONSULTAS 
+	
+	@SuppressWarnings("unchecked")
+	public List<Atendimento> consultarAtendimentosAnimal(int animalId) {
+		Query q = manager.createQuery("SELECT a FROM Atendimento a WHERE a.animal.id=" + animalId + "");
+		return q.getResultList();
+	}
+
 	
 //	public String consultarClientesQueTenhamCompradoProdutoEServico(String nomeProd, String nomeServ) {
 //		Query q = manager.query();

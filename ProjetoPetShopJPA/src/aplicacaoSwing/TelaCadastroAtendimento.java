@@ -16,7 +16,7 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.ScrollPaneConstants;
 
-import fachada.Fachada;
+import Fachada.Fachada;
 import modelo.Atendimento;
 import modelo.Produto;
 import modelo.Servico;

@@ -8,6 +8,7 @@ import javax.persistence.Query;
 import modelo.Animal;
 import modelo.Atendimento;
 import modelo.Cliente;
+import modelo.Servico;
 
 
 public class DAOAnimal extends DAO<Animal>{
@@ -23,9 +24,12 @@ public class DAOAnimal extends DAO<Animal>{
 	}
 
 
-
-
 	//CONSULTAS
+	
+	public Animal buscarAnimal(String nomeAnimal) {
+		Query q = manager.createQuery("SELECT a FROM Animal a WHERE a.nome LIKE '"+ nomeAnimal + "'");
+		return (Animal) q.getSingleResult();
+	}
 	
 //	public Animal consultarServicoAnimal(String nomeAnimal) {
 //		Query q = manager.query();
