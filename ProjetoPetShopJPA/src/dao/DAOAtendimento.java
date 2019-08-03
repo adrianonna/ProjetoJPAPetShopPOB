@@ -41,19 +41,22 @@ public class DAOAtendimento extends DAO<Atendimento>{
 	
 	public ArrayList<Cliente> consultarClientesQueTenhamCompradoProdutoEServico(String nomeProd, String nomeServ) {
 		try {
-			Query id_prod = manager.createQuery("select pro.id from Produto pro "+
+			Query prod = manager.createQuery("select pro.id from Produto pro "+
 												"where pro.nome ='"+ nomeProd + "'");
 			
-			Query id_serv = manager.createQuery("select serv.id from Servico serv "+
+			Query serv = manager.createQuery("select serv.id from Servico serv "+
 												"where serv.nome ='"+ nomeServ + "'");			
-//			
-//			Query q = manager.createQuery(
-//										"select ate from Atendimento ate" + 
-//										" join Animal an" + 
-//										" on an.id = ate.animal.id" + 
-//										" join Cliente cl" + 
-//										" on cl.id = an.cliente.id"+
-//										"where '" + id_serv + "' = (select serv.id from Servico serv)");
+			
+			Query q = manager.createQuery(
+										"select ate from Atendimento ate" + 
+										" join Animal an" + 
+										" on an.id = ate.animal.id" + 
+										" join Cliente cl" + 
+										" on cl.id = an.cliente.id"+
+										" where '" + serv.getSingleResult() + "' = (select serv.id from Servico serv)");
+//										" where '" + serv.getSingleResult() + "' = (select serv.id from Servico serv where '"+ serv.getSingleResult() +"'= serv.id)");
+			
+			
 			
 			Query cli = manager.createQuery(
 											"select cli from Cliente cli "+
@@ -61,14 +64,27 @@ public class DAOAtendimento extends DAO<Atendimento>{
 											"on ani.cliente.id = cli.id "+
 											"join Atendimento ate "+
 											"on ate.animal.id = ani.id");
+						
+//			Query ate = manager.createQuery(
+//										"select ate from Atendimento ate" + 
+//										" join Animal an" + 
+//										" on an.id = ate.animal.id" + 
+//										" join Cliente cl" + 
+//										" on cl.id = an.cliente.id");
 			
-			System.out.println("PROD AQUIIII "+id_prod.getSingleResult());
-			System.out.println("SERV AQUIIII "+id_serv.getSingleResult());
 			
-			List<Cliente> cl = cli.getResultList();
-			for (Cliente c : cl) {
-
-			}
+			
+			System.out.println("PROD AQUIIII "+prod.getSingleResult());
+			System.out.println("SERV AQUIIII "+serv.getSingleResult());
+			
+			System.out.println("ESSE AQUIIII "+q.getResultList());
+			
+//			int id_serv = (int) serv.getSingleResult();
+//			
+//			List<Atendimento> list_aten = ate.getResultList();
+//			for (Atendimento at : list_aten) {
+//				Servico at_ser = at.getServicos().get(id_serv);
+//			}
 			
 			return (ArrayList<Cliente>) cli.getResultList();
 		} catch (NoResultException e) {
