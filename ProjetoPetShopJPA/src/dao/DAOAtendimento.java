@@ -12,15 +12,26 @@ import modelo.Atendimento;
 import modelo.Cliente;
 import modelo.Servico;
 import modelo.Produto;
+import modelo.Raca;
 
 
 public class DAOAtendimento extends DAO<Atendimento>{
 	//Leitura POR id 
 	public Atendimento read (Object chave) {
 		try {
-			Integer nome = (Integer) chave;
-			Query q = manager.createQuery("select c from Atendimento c where c.id= "+ nome + "");
+			Integer id = (Integer) chave;
+			Query q = manager.createQuery("select c from Atendimento c where c.id= "+ id + "");
 			return (Atendimento) q.getSingleResult();
+		} catch (NoResultException e) {
+			return null;
+		}
+	}
+	
+	
+	public List<Atendimento> readAll () {
+		try {
+			Query q = manager.createQuery("select a from Atendimento a");
+			return q.getResultList();
 		} catch (NoResultException e) {
 			return null;
 		}
@@ -28,19 +39,71 @@ public class DAOAtendimento extends DAO<Atendimento>{
 	
 	// CONSULTAS 
 	
-//	public String consultarClientesQueTenhamCompradoProdutoEServico(String nomeProd, String nomeServ) {
-//		Query q = manager.query();
-//		q.constrain(Atendimento.class);
-//		q.descend("produtos").descend("nome").constrain(nomeProd);
-//		q.descend("servicos").descend("nome").constrain(nomeServ);
-//		List<Atendimento> resultados = q.execute();	
-//		String texto = "";
-//		for (Atendimento atendimento : resultados) {
-//			texto += atendimento.getAnimal().getCliente().getNome() + " | ";
+	public ArrayList<Cliente> consultarClientesQueTenhamCompradoProdutoEServico(String nomeProd, String nomeServ) {
+		try {
+			Query id_prod = manager.createQuery("select pro.id from Produto pro "+
+												"where pro.nome ='"+ nomeProd + "'");
+			
+			Query id_serv = manager.createQuery("select serv.id from Servico serv "+
+												"where serv.nome ='"+ nomeServ + "'");			
+//			
+//			Query q = manager.createQuery(
+//										"select ate from Atendimento ate" + 
+//										" join Animal an" + 
+//										" on an.id = ate.animal.id" + 
+//										" join Cliente cl" + 
+//										" on cl.id = an.cliente.id"+
+//										"where '" + id_serv + "' = (select serv.id from Servico serv)");
+			
+			Query cli = manager.createQuery(
+											"select cli from Cliente cli "+
+											"join Animal ani "+
+											"on ani.cliente.id = cli.id "+
+											"join Atendimento ate "+
+											"on ate.animal.id = ani.id");
+			
+			System.out.println("PROD AQUIIII "+id_prod.getSingleResult());
+			System.out.println("SERV AQUIIII "+id_serv.getSingleResult());
+			
+			List<Cliente> cl = cli.getResultList();
+			for (Cliente c : cl) {
+
+			}
+			
+			return (ArrayList<Cliente>) cli.getResultList();
+		} catch (NoResultException e) {
+			return null;
+		}
+	}
+	
+	
+//	public ArrayList<Cliente> consultarClientesPorServicoOuProduto(String nome) {
+//		
+//
+//		
+//		Query q1 = manager.query();
+//		Query q2 = manager.query();
+//		q1.constrain(Atendimento.class);
+//		q2.constrain(Atendimento.class);
+//		q1.descend("servicos").descend("nome").constrain(nome);
+//		q2.descend("produtos").descend("nome").constrain(nome);
+//		if (!q1.execute().isEmpty()) {
+//			List<Atendimento> resultados = q1.execute();
+//			ArrayList<Cliente> clientes = new ArrayList<>();
+//			for(Atendimento aten : resultados) {
+//				clientes.add(aten.getAnimal().getCliente()); 
+//			}
+//			return clientes;
+//		}else {
+//			List<Atendimento> resultados = q2.execute();
+//			ArrayList<Cliente> clientes = new ArrayList<>();
+//			for(Atendimento aten : resultados) {
+//				clientes.add(aten.getAnimal().getCliente()); 
+//			}
+//			return clientes;
 //		}
-//		return ""+texto;
 //	}
-//	
+	
 //	public String consultarRacaConsumiuProduto(String nomeProduto, String nomeServico) {
 //		Query q = manager.query();
 //		q.constrain(Atendimento.class);
@@ -68,30 +131,8 @@ public class DAOAtendimento extends DAO<Atendimento>{
 //		return clientes;
 //	}
 //	
-//	public ArrayList<Cliente> consultarClientesPorServicoOuProduto(String nome) {
-//		Query q1 = manager.query();
-//		Query q2 = manager.query();
-//		q1.constrain(Atendimento.class);
-//		q2.constrain(Atendimento.class);
-//		q1.descend("servicos").descend("nome").constrain(nome);
-//		q2.descend("produtos").descend("nome").constrain(nome);
-//		if (!q1.execute().isEmpty()) {
-//			List<Atendimento> resultados = q1.execute();
-//			ArrayList<Cliente> clientes = new ArrayList<>();
-//			for(Atendimento aten : resultados) {
-//				clientes.add(aten.getAnimal().getCliente()); 
-//			}
-//			return clientes;
-//		}else {
-//			List<Atendimento> resultados = q2.execute();
-//			ArrayList<Cliente> clientes = new ArrayList<>();
-//			for(Atendimento aten : resultados) {
-//				clientes.add(aten.getAnimal().getCliente()); 
-//			}
-//			return clientes;
-//		}
-//	}
-//	
+
+	
 //	public double consultarValorAtendimento(int id) {
 //		Query q = manager.query();
 //		q.constrain(Atendimento.class);

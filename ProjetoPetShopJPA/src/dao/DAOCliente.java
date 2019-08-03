@@ -11,6 +11,7 @@ import modelo.Animal;
 import modelo.Atendimento;
 import modelo.Cliente;
 import modelo.Produto;
+import modelo.Raca;
 import modelo.Servico;
 
 
@@ -26,6 +27,15 @@ public class DAOCliente  extends DAO<Cliente> {
 		}
 	}
 
+	
+	public List<Cliente> readAll () {
+		try {
+			Query q = manager.createQuery("select c from Cliente c");
+			return q.getResultList();
+		} catch (NoResultException e) {
+			return null;
+		}
+	}
 	
 	
 	//CONSULTAS
@@ -44,14 +54,10 @@ public class DAOCliente  extends DAO<Cliente> {
 //		return texto;
 //	}
 //	
-//	public String consultarClientePorNome(String nome) throws  Exception {
-//		Query q = manager.query();
-//		q.constrain(Cliente.class);
-//		q.descend("nome").constrain(nome);
-//		List<Cliente> result = q.execute(); 
-//		if (result.size() == 0)
-//			throw new Exception("\nConsultar cliente -  nao encontrado");
-//		return "O cliente �: "+result.get(0);
+//	public String consultarClientePorNome(String nome) {
+//		Query q = manager.createQuery("select c from Cliente c where c.nome = '"+ nome + "'");
+//		return (String) q.getSingleResult();
+//		return "\nConsultar cliente -  nao encontrado";
 //	}
 //	
 //	public  Cliente consultarClientePorNomeObj(String nome) throws  Exception {
@@ -64,28 +70,22 @@ public class DAOCliente  extends DAO<Cliente> {
 //		return result.get(0);
 //	}
 //	
-//	public Cliente consultarClientePorTelefone(String n) throws  Exception {
-//		Query q = manager.query();
-//		q.constrain(Cliente.class);
-//		q.descend("telefone").constrain(n); 
-//		List<Cliente> resultados = q.execute();
-//		if(resultados.size()==0)
-//			throw new Exception("\nConsultar cliente por telefone  - telefone nao encontrado");
-//		else
-//			return resultados.get(0);
-//	}
+	public Cliente consultarClientePorTelefone(String n) throws  Exception {
+		try {
+			String telefone = (String) n;
+			Query q = manager.createQuery("select c from Cliente c where c.telefone= '"+ telefone + "'");
+			return (Cliente) q.getSingleResult();
+		} catch (NoResultException e) {
+			return null;
+		}
+	}
 //	
-//	public ArrayList<Animal> consultarAnimaisDoCliente(String nomeCliente) {
-//		Query q = manager.query();
-//		q.constrain(Cliente.class);
-//		q.descend("nome").constrain(nomeCliente);
-//		List<Cliente> resultados = q.execute();
-//		ArrayList<Animal> animais = new ArrayList<>();
-//		for(Animal ani : resultados.get(0).getAnimais()) {
-//			animais.add(ani);
-//		}
-//		return animais;
-//	}	
+	public ArrayList<Animal> consultarAnimaisDoCliente(String nomeCliente) {
+		Query q = manager.createQuery("select a from Animal a "
+									+ "join Cliente c on c.id = a.cliente.id "
+									+ "where c.nome= '"+ nomeCliente + "'");
+		return (ArrayList<Animal>) q.getResultList();
+	}
 //		
 //	public int consultarTotalClientes() {
 //		Query q = manager.query();

@@ -7,6 +7,7 @@ import javax.persistence.Query;
 
 import modelo.Cliente;
 import modelo.Produto;
+import modelo.Raca;
 import modelo.Servico;
 
 public class DAOServico extends DAO<Servico>{
@@ -20,6 +21,17 @@ public class DAOServico extends DAO<Servico>{
 			return null;
 		}
 	}
+	
+	public List<Servico> readAll () {
+		try {
+			Query q = manager.createQuery("select c from Servico c");
+			return q.getResultList();
+		} catch (NoResultException e) {
+			return null;
+		}
+	}
+	
+	
 //	
 //	// por parte do nome
 //	public  List<Servico> consultarServicoPorParteNome(String nome) {

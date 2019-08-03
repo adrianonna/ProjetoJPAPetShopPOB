@@ -301,18 +301,18 @@ public class Fachada {
 //	BUSCA
 //	
 //	// buscas com 3 classes 
-//	public static String consultarClientesQueTenhamCompradoProdutoEServico(String nomeProduto, String nomeServico) throws  Exception {
-//		Servico serv = daoservico.read(nomeServico.toLowerCase());
-//		Produto prod = daoproduto.read(nomeProduto.toLowerCase());
-//		if (serv == null && prod == null) {
-//			throw new Exception("Servico ou produto nao cadastrado!");
-//		}
-//		String texto = daoatendimento.consultarClientesQueTenhamCompradoProdutoEServico(nomeProduto.toLowerCase(), nomeServico.toLowerCase());
-//		if(texto.isEmpty()) {
-//			throw new Exception("N�o existe cliente que consumiu o servico e produto em conjunto!");
-//		}
-//		return "Clientes que compraram "+ nomeProduto + " e " + nomeServico + " => "+texto;
-//	}
+	public static String consultarClientesQueTenhamCompradoProdutoEServico(String nomeProduto, String nomeServico) throws  Exception {
+		Servico serv = daoservico.read(nomeServico.toLowerCase());
+		Produto prod = daoproduto.read(nomeProduto.toLowerCase());
+		if (serv == null && prod == null) {
+			throw new Exception("Servico ou produto nao cadastrado!");
+		}
+		ArrayList<Cliente> texto = daoatendimento.consultarClientesQueTenhamCompradoProdutoEServico(nomeProduto.toLowerCase(), nomeServico.toLowerCase());
+		if(texto.equals(null)) {
+			throw new Exception("N�o existe cliente que consumiu o servico e produto em conjunto!");
+		}
+		return "Clientes que compraram "+ nomeProduto + " e " + nomeServico + " => "+texto;
+	}
 //	
 //	public static String consultarClientesPorServicoOuProduto(String nome) throws  Exception {
 //		Servico serv = daoservico.read(nome.toLowerCase());
@@ -331,7 +331,7 @@ public class Fachada {
 //			return "\nOs clientes que compraram o servico "+serv.getNome()+" sao: "+nomeClientes;
 //		return null;
 //	}
-//	
+	
 //	public static String consultarRacaConsumiuProduto(String nomeProduto, String nomeServico) throws Exception {
 //		Servico serv = daoservico.read(nomeServico.toLowerCase());
 //		Produto prod = daoproduto.read(nomeProduto.toLowerCase());
@@ -354,10 +354,10 @@ public class Fachada {
 //		return result;
 //	}
 //	
-////	public static String consultarClientePorNome(String caracteres)  throws  Exception {
-////		String result = daocliente.consultarClientePorNome(caracteres.toLowerCase());
-////		return "O cliente do nome "+caracteres+" � "+result;
-////	}
+//	public static String consultarClientePorNome(String caracteres)  throws  Exception {
+//		String result = daocliente.consultarClientePorNome(caracteres);
+//		return "O cliente do nome "+result+" foi encontrado!!";
+//	}
 //	
 //	public static Cliente consultarClientePorNomeObj(String caracteres)  throws  Exception {
 //		Cliente result = daocliente.consultarClientePorNomeObj(caracteres.toLowerCase());
@@ -365,19 +365,19 @@ public class Fachada {
 //	}
 //	
 //	
-//	public static String consultarClientePorTelefone(String tel) throws  Exception {
-//		Cliente result = daocliente.consultarClientePorTelefone(tel);
-//		return "O cliente do telefone "+tel+ " � " +result.getNome();
-//	}
-//	
-//	public static String consultarAnimaisDoCliente(String cli) throws  Exception {
-//		ArrayList<Animal> animais = daocliente.consultarAnimaisDoCliente(cli.toLowerCase());
-//		String texto = "";
-//		for(Animal ani : animais) {
-//			texto += ani.getNome()+", ";
-//		}		
-//		return "Os animais do cliente "+cli+" sao: "+texto;
-//	}
+	public static String consultarClientePorTelefone(String tel) throws  Exception {
+		Cliente result = daocliente.consultarClientePorTelefone(tel);
+		return "O cliente do telefone "+tel+ " � " +result.getNome();
+	}
+	
+	public static String consultarAnimaisDoCliente(String cli) throws  Exception {
+		ArrayList<Animal> animais = daocliente.consultarAnimaisDoCliente(cli.toLowerCase());
+		String texto = "";
+		for(Animal ani : animais) {
+			texto += ani.getNome()+", ";
+		}		
+		return "Os animais do cliente "+cli+" sao: "+texto;
+	}
 //	
 //	public static String consultarClienteDoAnimal(String ani) throws  Exception {
 //		Animal a = daoanimal.read(ani.toLowerCase());

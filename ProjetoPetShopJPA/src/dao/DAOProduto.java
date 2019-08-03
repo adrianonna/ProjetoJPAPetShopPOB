@@ -8,6 +8,7 @@ import javax.persistence.Query;
 import modelo.Atendimento;
 import modelo.Cliente;
 import modelo.Produto;
+import modelo.Raca;
 import modelo.Servico;
 
 public class DAOProduto extends DAO<Produto>{
@@ -17,6 +18,16 @@ public class DAOProduto extends DAO<Produto>{
 			String nome = (String) chave;
 			Query q = manager.createQuery("select c from Produto c where c.nome= '"+ nome + "'");
 			return (Produto) q.getSingleResult();
+		} catch (NoResultException e) {
+			return null;
+		}
+	}
+	
+	
+	public List<Produto> readAll () {
+		try {
+			Query q = manager.createQuery("select p from Produto p");
+			return q.getResultList();
 		} catch (NoResultException e) {
 			return null;
 		}

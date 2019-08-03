@@ -8,6 +8,7 @@ import javax.persistence.Query;
 import modelo.Animal;
 import modelo.Atendimento;
 import modelo.Cliente;
+import modelo.Raca;
 
 
 public class DAOAnimal extends DAO<Animal>{
@@ -22,6 +23,15 @@ public class DAOAnimal extends DAO<Animal>{
 		}
 	}
 
+	
+	public List<Animal> readAll () {
+		try {
+			Query q = manager.createQuery("select a from Animal a");
+			return q.getResultList();
+		} catch (NoResultException e) {
+			return null;
+		}
+	}
 
 
 
