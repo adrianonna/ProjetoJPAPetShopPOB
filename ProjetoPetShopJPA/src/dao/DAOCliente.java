@@ -39,6 +39,13 @@ public class DAOCliente  extends DAO<Cliente> {
 	
 	
 	//CONSULTAS
+	
+	public ArrayList<Cliente> consultarClientesQueTenhamCompradoProdutoEServico(String nomeProd, String nomeServ) {
+		Query q = manager.createQuery("SELECT c FROM Cliente c JOIN c.animais ani JOIN ani.atendimentos aten JOIN aten.produtos prod JOIN aten.servicos serv WHERE prod.nome = '"+ nomeProd +"' AND serv.nome = '" + nomeServ +  "'");
+		System.out.println(q.getResultList());
+		return (ArrayList<Cliente>) q.getResultList();
+	}
+	
 //	
 //	public  String consultarClientePorParteNome(String caracteres) {
 //		Query q = manager.query();
