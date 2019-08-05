@@ -39,6 +39,16 @@ public class DAOAtendimento extends DAO<Atendimento>{
 	
 	// CONSULTAS 
 	
+	public String consultarRacaConsumiuProduto(String nomeProduto, String nomeServico) {
+		Query q = manager.createQuery("SELECT a FROM Atendimento a JOIN a.produtos prod JOIN a.servicos serv WHERE prod.nome = '"+nomeProduto+"' AND serv.nome = '" + nomeServico + "'");
+		List<Atendimento> resultados = q.getResultList();
+		String texto = "";
+		for (Atendimento atendimento : resultados) {
+			texto += atendimento.getAnimal().getRaca().getDescricao() + " | ";
+		}
+		return ""+ texto;
+	}
+	
 	public ArrayList<Cliente> consultarClientesQueTenhamCompradoProdutoEServico(String nomeProd, String nomeServ) {
 		try {
 			Query prod = manager.createQuery("select pro.id from Produto pro "+
