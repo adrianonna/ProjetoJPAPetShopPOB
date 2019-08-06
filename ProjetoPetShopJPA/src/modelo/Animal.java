@@ -16,6 +16,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import org.eclipse.persistence.annotations.Index;
+
 import modelo.Raca;
 
 
@@ -25,6 +27,7 @@ public class Animal {
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Integer id;
 	
+	@Index
 	private String nome;
 	private Date data_nasc;
 	private String sexo;

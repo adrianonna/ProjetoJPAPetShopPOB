@@ -7,13 +7,14 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.Index;
+import org.eclipse.persistence.annotations.Index;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import modelo.Atendimento;
 
-@Entity 
+@Entity
+@Index(name="CLI_IND", columnNames= {"nome", "email"})
 public class Cliente {
 	
 	@Id		

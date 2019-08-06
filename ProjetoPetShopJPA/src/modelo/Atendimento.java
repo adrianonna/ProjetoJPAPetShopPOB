@@ -14,6 +14,8 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import org.eclipse.persistence.annotations.Index;
+
 @Entity 
 public class Atendimento {
 	
@@ -21,6 +23,7 @@ public class Atendimento {
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Integer id;
 	
+	@Index
 	private double precoTotal;
 	private LocalDate data;
 	private String funcionario;

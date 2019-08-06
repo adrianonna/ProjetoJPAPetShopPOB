@@ -8,11 +8,11 @@ public class AplicacaoConsole {
 
 	public AplicacaoConsole(){	
 		Fachada.inicializar();
-//		cadastrar();
+		cadastrar();
 //		apagar();
 //		atualizar();
 //		listar();
-		consultar();
+//		consultar();
 		Fachada.finalizar();
 	}
 
