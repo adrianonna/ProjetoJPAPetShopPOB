@@ -46,37 +46,38 @@ public class DAOCliente  extends DAO<Cliente> {
 		return (ArrayList<Cliente>) q.getResultList();
 	}
 	
-//	
-//	public  String consultarClientePorParteNome(String caracteres) {
-//		Query q = manager.query();
-//		q.constrain(Cliente.class);
-//		q.descend("nome").constrain(caracteres).like();
-//		List<Cliente> result = q.execute(); 
-//		
-//		String texto = "\nConsultar cliente por parte do nome: "+caracteres;
-//		if (result.isEmpty())  
-//			texto += "\nConsulta vazia";
-//		else 
-//			for(Cliente c: result)texto += "\n" + c;
-//		return texto;
-//	}
-//	
+	
+	public ArrayList<Cliente> consultarClientesPorServicoOuProduto(String nome) {
+		Query q = manager.createQuery("SELECT distinct c FROM Cliente c join c.animais ani JOIN ani.atendimentos aten JOIN aten.produtos prod JOIN aten.servicos serv WHERE prod.nome = '"+ nome +"' OR serv.nome = '" + nome +  "'");
+		System.out.println(q.getResultList());
+		return (ArrayList<Cliente>) q.getResultList();
+	}
+	
+	
+	public ArrayList<Cliente> consultarClientePorParteNome(String nome) {
+			try {
+				Query q = manager.createQuery("select c from Cliente c where c.nome like '%"+ nome + "%'");
+				return (ArrayList<Cliente>) q.getResultList();
+			} catch (NoResultException e) {
+				return null;
+			}
+	}
+	
 //	public String consultarClientePorNome(String nome) {
 //		Query q = manager.createQuery("select c from Cliente c where c.nome = '"+ nome + "'");
 //		return (String) q.getSingleResult();
 //		return "\nConsultar cliente -  nao encontrado";
 //	}
-//	
-//	public  Cliente consultarClientePorNomeObj(String nome) throws  Exception {
-//		Query q = manager.query();
-//		q.constrain(Cliente.class);
-//		q.descend("nome").constrain(nome);
-//		List<Cliente> result = q.execute(); 
-//		if (result.size() == 0)
-//			throw new Exception("\nConsultar cliente -  nao encontrado");
-//		return result.get(0);
-//	}
-//	
+	
+	public  Cliente consultarClientePorNomeObj(String nome) throws  Exception {
+			try {
+				Query q = manager.createQuery("select c from Cliente c where c.nome= '"+ nome + "'");
+				return (Cliente) q.getSingleResult();
+			} catch (NoResultException e) {
+				return null;
+			}
+	}
+	
 	public Cliente consultarClientePorTelefone(String n) throws  Exception {
 		try {
 			String telefone = (String) n;

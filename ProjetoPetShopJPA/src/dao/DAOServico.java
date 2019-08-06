@@ -5,6 +5,8 @@ import java.util.List;
 import javax.persistence.NoResultException;
 import javax.persistence.Query;
 
+import modelo.Animal;
+import modelo.Atendimento;
 import modelo.Cliente;
 import modelo.Produto;
 import modelo.Raca;
@@ -29,6 +31,13 @@ public class DAOServico extends DAO<Servico>{
 		} catch (NoResultException e) {
 			return null;
 		}
+	}
+	
+	
+	
+	public List<Servico> consultarServicoAnimal(String nomeAnimal) {
+		Query q = manager.createQuery("SELECT distinct a.servicos FROM Atendimento a join a.servicos serv join a.animal ani where ani.nome = '"+ nomeAnimal +"'");
+		return (List<Servico>) q.getResultList();
 	}
 	
 	

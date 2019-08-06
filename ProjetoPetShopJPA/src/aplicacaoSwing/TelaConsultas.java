@@ -108,7 +108,7 @@ public class TelaConsultas extends JFrame {
 		btnLstAtend.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
-					textArea.setText(Fachada.consultarClienteMaisConsumiu());
+					textArea.setText(Fachada.consultarAtendimentoMaisConsumiu());
 					
 				} catch (Exception e1) {
 					JOptionPane.showMessageDialog(null, e1.getMessage());

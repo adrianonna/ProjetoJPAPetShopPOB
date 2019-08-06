@@ -49,86 +49,6 @@ public class DAOAtendimento extends DAO<Atendimento>{
 		return ""+ texto;
 	}
 	
-	public ArrayList<Cliente> consultarClientesQueTenhamCompradoProdutoEServico(String nomeProd, String nomeServ) {
-		try {
-			Query prod = manager.createQuery("select pro.id from Produto pro "+
-												"where pro.nome ='"+ nomeProd + "'");
-			
-			Query serv = manager.createQuery("select serv.id from Servico serv "+
-												"where serv.nome ='"+ nomeServ + "'");			
-			
-			Query q = manager.createQuery(
-										"select ate from Atendimento ate" + 
-										" join Animal an" + 
-										" on an.id = ate.animal.id" + 
-										" join Cliente cl" + 
-										" on cl.id = an.cliente.id"+
-										" where '" + serv.getSingleResult() + "' = (select serv.id from Servico serv)");
-//										" where '" + serv.getSingleResult() + "' = (select serv.id from Servico serv where '"+ serv.getSingleResult() +"'= serv.id)");
-			
-			
-			
-			Query cli = manager.createQuery(
-											"select cli from Cliente cli "+
-											"join Animal ani "+
-											"on ani.cliente.id = cli.id "+
-											"join Atendimento ate "+
-											"on ate.animal.id = ani.id");
-						
-//			Query ate = manager.createQuery(
-//										"select ate from Atendimento ate" + 
-//										" join Animal an" + 
-//										" on an.id = ate.animal.id" + 
-//										" join Cliente cl" + 
-//										" on cl.id = an.cliente.id");
-			
-			
-			
-			System.out.println("PROD AQUIIII "+prod.getSingleResult());
-			System.out.println("SERV AQUIIII "+serv.getSingleResult());
-			
-			System.out.println("ESSE AQUIIII "+q.getResultList());
-			
-//			int id_serv = (int) serv.getSingleResult();
-//			
-//			List<Atendimento> list_aten = ate.getResultList();
-//			for (Atendimento at : list_aten) {
-//				Servico at_ser = at.getServicos().get(id_serv);
-//			}
-			
-			return (ArrayList<Cliente>) cli.getResultList();
-		} catch (NoResultException e) {
-			return null;
-		}
-	}
-	
-	
-//	public ArrayList<Cliente> consultarClientesPorServicoOuProduto(String nome) {
-//		
-//
-//		
-//		Query q1 = manager.query();
-//		Query q2 = manager.query();
-//		q1.constrain(Atendimento.class);
-//		q2.constrain(Atendimento.class);
-//		q1.descend("servicos").descend("nome").constrain(nome);
-//		q2.descend("produtos").descend("nome").constrain(nome);
-//		if (!q1.execute().isEmpty()) {
-//			List<Atendimento> resultados = q1.execute();
-//			ArrayList<Cliente> clientes = new ArrayList<>();
-//			for(Atendimento aten : resultados) {
-//				clientes.add(aten.getAnimal().getCliente()); 
-//			}
-//			return clientes;
-//		}else {
-//			List<Atendimento> resultados = q2.execute();
-//			ArrayList<Cliente> clientes = new ArrayList<>();
-//			for(Atendimento aten : resultados) {
-//				clientes.add(aten.getAnimal().getCliente()); 
-//			}
-//			return clientes;
-//		}
-//	}
 	
 //	public String consultarRacaConsumiuProduto(String nomeProduto, String nomeServico) {
 //		Query q = manager.query();
@@ -159,23 +79,19 @@ public class DAOAtendimento extends DAO<Atendimento>{
 //	
 
 	
-//	public double consultarValorAtendimento(int id) {
-//		Query q = manager.query();
-//		q.constrain(Atendimento.class);
-//		q.descend("cod").constrain(id);
-//		List<Atendimento> atendimentos = q.execute();	//retorna uma lista com a quantidade de elementos iguais a consulta
-//		Atendimento aten = atendimentos.get(0);
-//		return aten.getPrecoTotal();
-//	}
-//	
-//	public Atendimento consultarClienteMaisConsumiu() {
-//		Query q = manager.query();
-//		q.constrain(Atendimento.class);
-//		q.descend("precoTotal").orderDescending();
-//		List<Atendimento> atendimentos = q.execute();
-//		return atendimentos.get(0);
-//	}
-//	
+	public double consultarValorAtendimento(int id) {
+		Query q = manager.createQuery("SELECT a FROM Atendimento a WHERE a.id = '"+id+"'");
+		Atendimento resultado = (Atendimento) q.getSingleResult();
+		return resultado.getPrecoTotal();
+	}
+	
+	public Atendimento consultarAtendimentoMaisConsumiu() {
+		Query q = manager.createQuery("SELECT max(a.precoTotal) FROM Atendimento a");
+		Double resultado = (Double) q.getSingleResult();
+		Query qq = manager.createQuery("SELECT a FROM Atendimento a where a.precoTotal = "+resultado);
+		return (Atendimento) qq.getSingleResult();
+	}
+	
 //	public ArrayList<Cliente> consultarClientesPorServico(String nome) {
 //		Query q = manager.query();
 //		q.constrain(Atendimento.class);

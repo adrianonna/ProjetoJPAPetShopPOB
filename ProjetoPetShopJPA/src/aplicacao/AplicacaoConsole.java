@@ -155,6 +155,8 @@ public class AplicacaoConsole {
 			// Consulta cliente
 //			System.out.println(Fachada.consultarClientePorNome("Adriano Amaral"));
 //			System.out.println(Fachada.consultarClientePorParteNome("Lucas"));
+//			System.out.println(Fachada.consultarClientePorParteNome("Adriano"));
+			
 			
 			// Consulta telefone
 //			System.out.println(Fachada.consultarClientePorTelefone("(83) 98800-0000"));
@@ -178,6 +180,8 @@ public class AplicacaoConsole {
 //			System.out.println(Fachada.consultarValorAtendimento(4));
 //			System.out.println("\n");
 //
+//			System.out.println(Fachada.consultarAtendimentoMaisConsumiu());
+			
 //			//animais que consumiram mais produtos por atendimento
 //			System.out.println(Fachada.consultarClienteMaisConsumiu());
 //			System.out.println("\n");
@@ -190,7 +194,7 @@ public class AplicacaoConsole {
 //			System.out.println(Fachada.consultarClientesPorServico("banho maior"));
 //
 //			// servicos do animal
-//			System.out.println(Fachada.consultarServicoAnimal("Zoe"));
+			System.out.println(Fachada.consultarServicoAnimal("Zoe"));
 //
 //			// clientes que fizerem pedidos com mais de dois produtos
 //			System.out.println(Fachada.consultarAtendimentoQuantidadeProdutos(2));
@@ -199,9 +203,9 @@ public class AplicacaoConsole {
 //
 //			// as 3 consultas
 //			System.out.println(" === AS TRES CONSULTAS === ");
-			System.out.println(Fachada.consultarClientesQueTenhamCompradoProdutoEServico("bravecto", "banho maior"));
+//			System.out.println(Fachada.consultarClientesQueTenhamCompradoProdutoEServico("bravecto", "banho maior"));
 
-//			System.out.println(Fachada.consultarClientesPorServicoOuProduto("banho maior"));
+//			System.out.println(Fachada.consultarClientesPorServicoOuProduto("banho menor"));
 
 //			System.out.println(Fachada.consultarRacaConsumiuProduto("bravecto", "banho menor"));
 

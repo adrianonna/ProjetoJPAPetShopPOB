@@ -35,18 +35,8 @@ public class DAOAnimal extends DAO<Animal>{
 
 
 
-	//CONSULTAS
-	
-//	public Animal consultarServicoAnimal(String nomeAnimal) {
-//		Query q = manager.query();
-//		q.constrain(Animal.class);
-//		q.descend("nome").constrain(nomeAnimal);
-//		List<Animal> animal = q.execute();
-//		return animal.get(0);
-//	}
-//	
-//	
-//
+	//CONSULTAS	
+
 //	public int consultarUltimoIdAnimal() {
 //		Query q = manager.query();
 //		q.constrain(Animal.class);
