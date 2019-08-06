@@ -307,7 +307,7 @@ public class Fachada {
 		if (serv == null && prod == null) {
 			throw new Exception("Servico ou produto nao cadastrado!");
 		}
-		ArrayList<Cliente> texto = daoatendimento.consultarClientesQueTenhamCompradoProdutoEServico(nomeProduto.toLowerCase(), nomeServico.toLowerCase());
+		ArrayList<Cliente> texto = daocliente.consultarClientesQueTenhamCompradoProdutoEServico(nomeProduto.toLowerCase(), nomeServico.toLowerCase());
 		if(texto.equals(null)) {
 			throw new Exception("N�o existe cliente que consumiu o servico e produto em conjunto!");
 		}
